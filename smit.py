@@ -9,11 +9,25 @@ import logging
 import ipaddress
 import threading
 import subprocess
+from flask import Flask
+from threading import Thread
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 from pymongo import MongoClient
 from telegram import Update
 from telegram.ext import CallbackContext
 
+
+app = Flask(__name__)
+
+@app.route('/')
+def home():
+    return "Bot running"
+
+def run():
+    app.run(host="0.0.0.0", port=8080)
+
+def keep_alive():
+    Thread(target=run).start()
 # Replace with your actual bot token and admin user ID
 BOT_TOKEN = '8237948690:AAHSBpW1WZCG-TXmrfZqErrzBwboYDB0FAM'
 ADMIN_USER_ID = 8472025477
@@ -446,4 +460,5 @@ def main():
     application.run_polling()
 
 if __name__ == '__main__':
+    keep_alive()
     main()
